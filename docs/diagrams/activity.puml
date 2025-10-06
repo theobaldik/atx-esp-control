@@ -1,0 +1,36 @@
+@startuml
+
+title Activity Diagram
+footer \nVersion 1.0
+
+start
+:Wakeup;
+note right: Triggered on PWR_SW Pressed/Held or MB_ON Pulled Low
+if (PS_ON) then (high)
+    :Pull PS_ON Low;
+else (low)
+    switch (Wakeup Source)
+    case ( PWR_SW Pulled High)
+        if (PWR_SW Held) then (yes)
+            :Pull PS_ON High;
+        else (no)
+            if (MB_ON) then (high)
+                :Pull MB_ACPI High;
+            else (low)
+                :Pull PS_ON High;
+                note right: Shall not occur
+            endif
+        endif
+    case ( MB_ON Pulled Low)
+        :Wait 3 seconds;
+        note right: Handle restart
+        if (MB_ON) then (low)
+            :Pull PS_ON High;
+        else (high)
+        endif
+    endswitch
+endif
+:Sleep;
+stop
+
+@enduml

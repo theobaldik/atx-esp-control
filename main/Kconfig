@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: MIT
+
+menu "ATX ESP Control Configuration"
+
+    menu "GPIO Settings"
+
+    config ATX_ESP_GPIO_PS_ON
+        int "GPIO PS_ON"
+        default 3
+        range 0 39
+        help
+            GPIO output connected to the PS_ON PSU pin.
+            This is used to control the PSU power state.
+            When pulled Low, the PSU turns on, when High or floating, the PSU turns off.
+
+    config ATX_ESP_GPIO_PWR_SW
+        int "GPIO PWR_SW"
+        default 4
+        range 0 39
+        help
+            GPIO input connected to the power button.
+            Must be set to an RTC GPIO pin in order to work in deep sleep mode.
+
+    config ATX_ESP_GPIO_MB_ON
+        int "GPIO MB_ON"
+        default 2
+        range 0 39
+        help
+            GPIO input connected to the controlled motherboard.
+            The motherboard shall output ~3.3V to this pin when the system is running
+            and 0V (floating) when the system is in a soft-off state.
+            Must be set to an RTC GPIO pin in order to work in deep sleep mode.
+
+    config ATX_ESP_GPIO_MB_ACPI
+        int "GPIO MB_ACPI"
+        default 10
+        range 0 39
+        help
+            GPIO output connected to the controlled motherboard pin configured
+            for ACPI power state indication.
+            This is used to signal the motherboard to enter a soft-off state.
+
+    endmenu
+
+endmenu

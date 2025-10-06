@@ -1,0 +1,29 @@
+@startuml
+
+title State Machine
+hide empty description
+
+skinparam defaultTextAlignment center
+
+state "MB OFF\nPSU OFF" as mb_off_psu_off
+state "MB START\nPSU ON" as mb_start_psu_on
+state "MB ON\nPSU ON" as mb_on_psu_on
+state "MB STOP\nPSU ON" as mb_stop_psu_on
+state "MB OFF\nPSU ON" as mb_off_psu_on
+
+' Power on
+[*] --> mb_off_psu_off
+mb_off_psu_off --> mb_off_psu_on : PWR_SW Pressed\n→WAKEUP\n→BOOT:=1\n→PS_ON Low
+mb_off_psu_on --> mb_start_psu_on : BOOT=1\n→WAIT
+mb_start_psu_on --> mb_on_psu_on : MB_ON High\n→SLEEP
+
+' Soft power off
+mb_on_psu_on --> mb_stop_psu_on : PWR_SW Pressed\n→WAKEUP\n→BOOT:=0\n→MB_ACPI High
+mb_on_psu_on --> mb_stop_psu_on : OS_OFF\n→WAIT
+mb_stop_psu_on --> mb_off_psu_on : MB_ON Low\n→SLEEP
+mb_off_psu_on --> mb_off_psu_off : BOOT=0\n→PS_ON High\n→SLEEP
+
+' Hard power off
+mb_on_psu_on --> mb_off_psu_off : PWR_SW Held\n→WAKEUP\n→PS_ON High
+
+@enduml

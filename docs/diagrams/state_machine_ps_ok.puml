@@ -1,0 +1,28 @@
+@startuml
+
+title Power Switch States
+
+skinparam defaultTextAlignment center
+
+state "MB OFF\nPSU OFF" as mb_off_psu_off
+state "MB START\nPSU ON" as mb_start_psu_on
+state "MB ON\nPSU ON" as mb_on_psu_on
+state "MB STOP\nPSU ON" as mb_stop_psu_on
+state "MB OFF\nPSU ON" as mb_off_psu_on
+
+' Power on
+[*] --> mb_off_psu_off
+mb_off_psu_off --> mb_off_psu_on : PWR_SW Pressed\n→PS_ON Low\n→BOOT:=1
+mb_off_psu_on --> mb_start_psu_on : BOOT=1 & PS_OK High\n→MOS Low
+mb_start_psu_on --> mb_on_psu_on : MB_ON High\n→WAIT\n→SLEEP
+
+' Soft power off
+mb_on_psu_on --> mb_stop_psu_on : PWR_SW Pressed\n→MB_ACPI High
+mb_on_psu_on --> mb_stop_psu_on : OS_OFF\n→WAIT
+mb_stop_psu_on --> mb_off_psu_on : MB_ON Low\n→MOS High\n→BOOT:=0
+mb_off_psu_on --> mb_off_psu_off : BOOT=0\n→PS_ON High\n→SLEEP
+
+' Hard power off
+mb_on_psu_on --> mb_off_psu_off : PWR_SW Held\n→PS_ON High
+
+@enduml
