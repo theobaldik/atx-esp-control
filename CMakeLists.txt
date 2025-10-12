@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 idf_build_set_property(MINIMAL_BUILD ON)
-project(atxEspControl)
-set(PROJECT_VER "0.1.0")
+idf_build_set_property(IDF_VER "v5.1")
+project(atxEspControl VERSION 0.1.0)

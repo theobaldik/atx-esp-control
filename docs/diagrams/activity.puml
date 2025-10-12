@@ -1,4 +1,4 @@
-@startuml
+@startuml activity
 
 title Activity Diagram
 footer \nVersion 1.0
