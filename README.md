@@ -33,3 +33,13 @@ The recommended way of building the project from source is to use [ESP-IDF (v5.1
 1. Generate `sdkconfig` using `idf.py menuconfig`
 2. Build the project using `idf.py build`
 3. Flash it to the ESP32-C3 chip using `idf.py flash`
+
+## Functionality
+
+The functionality is presented in the following activity diagram.
+
+![Activity Diagram](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/theobaldik/atx-esp-control/refs/heads/master/docs/diagrams/activity.puml)
+
+The conditional logic is relatively simple. It is based on the the controlled MB state and the PSU state as shown in the state diagram below.
+
+![State Machine Diagram](https://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/theobaldik/atx-esp-control/refs/heads/master/docs/diagrams/state_machine.puml)
